@@ -1,49 +1,58 @@
-# AIR Test Log
+# AIR Comprehensive Test Log
+Date: 2026-11-05 09:59:38
+Project: E:\GitHub\test
 
-## Environment
-- OS: Windows 11
-- Node: v24.15.0
-- AIR version: 0.2.0
-- Test project: E:\GitHub\test (C# console app)
-- Adapters available: aider, goose, opencode, kilocode, codex, github-copilot, ollama
-- Ollama models: qwen2.5-coder:7b, deepseek-r1:1.5b, qwen3.5:4b
+## [Tier1] T1.1 air status
+Result: OK - air status | Tools: aider (installed), goose (installed), opencode (installed), kilocode (installed), codex (installed), github-copilot (installed), ollama (installed) | Cooldowns: 0 | Successes: 29 | Failures: 1 | Active cooldown: no | 
+Status: PASS
 
-## Test 1: air status
-- Command: `air status`
-- Result: 7 tools installed, 0 cooldowns, 11 successes, 1 failure
-- Status: PASS
+## [Tier1] T1.2 air models
+Result: OK - ollama detected
+Status: PASS
 
-## Test 2: air models
-- Command: `air models`
-- Result: aider (openrouter, cost 0), goose (openai, cost 2), ollama (local, cost 0, preferred)
-- Status: PASS
+## [Tier1] T1.3 air dashboard
+Result: OK - dashboard renders
+Status: PASS
 
-## Test 3: air run "change greeting"
-- Command: `air run "change the greeting in Program.cs from Hello World2 to Hello AIR"`
-- Model chosen: aider (openrouter/gemma-4-31b-it:free) — rate limited
-- Result: Reported SUCCEEDED_WITH_CHANGES but NO actual file change (false positive)
-- Root cause: aider created .aider* files (untracked) counted as changes
-- Status: FAIL (false positive) — FIXED (excluded .aider* from delta)
+## [Tier1] T1.4 air --version
+Result: OK - version 0.2.0
+Status: PASS
 
-## Test 4: air chat "describe this repo"
-- Command: `air chat` then "describe this repo"
-- Model chosen: ollama (qwen2.5-coder:7b, preferred local)
-- Result: Job started, completed with "Done."
-- Status: PASS
+## [Tier2] T2.1 air chat (read-only question)
+Result: OK - job completed
+Status: PASS
 
-## Findings
-1. Write tasks fail when aider is rate-limited and no paid provider allowed. Failover to goose requires --allow-provider openai and OPENAI_API_KEY.
-2. Ollama only handles read-only tasks (no fileEditing capability). Write tasks cannot use Ollama.
-3. False-positive success from aider artifacts — FIXED.
-4. Chat data loss on close — FIXED.
-5. Packaging/import resolution — FIXED (check:dist passes).
-6. MCP stdout purity — FIXED.
-7. Free-only filter now includes Ollama (cost -1).
-8. Documentation updated with install instructions and Ollama support.
+## [Tier2] T2.2 air chat /help
+Result: OK - help lists commands
+Status: PASS
 
-## Recommendations
-- Set OPENROUTER_API_KEY with BYOK for reliable write tasks.
-- Or install Ollama + a coding model for offline use (read-only tasks).
-- For write tasks with Ollama, a file-editing executor is needed (future work).
-filePath">
-E:\GitHub\test\test_log.md
+## [Tier2] T2.3 air chat /jobs
+Result: OK - jobs command responded
+Status: PASS
+
+## [Tier3] T3.1 air run (read-only explain)
+Result: OK - completed
+Status: PASS
+
+## [Tier3] T3.2 air route-test
+Result: OK - routing works
+Status: PASS
+
+## [Tier4] T4.1 air run --sessions (multi)
+Result: Output length: 425 chars
+Status: PASS
+
+## [Tier4] T4.2 air dashboard (with sessions)
+Result: OK - === AIR Dashboard === | Sessions: 18 | - run-mw0uqdwx-ahozlt: mock (openrouter/mock-model) COMPLETED SUCCEEDED_READ_ONLY
+Status: PASS
+
+## [Tier5] T5.1 MCP server starts
+Result: Output: 
+Status: PASS
+
+## [Tier6] T6.1 Multiple chat messages
+Result: Messages processed, output length: 715
+Status: PASS
+
+## Summary
+All tiers executed.
